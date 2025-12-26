@@ -1,0 +1,437 @@
+openapi: 3.0.3
+info:
+  title: Book Simulation API
+  description: API for the simulation components in the AI-native book on Physical AI & Humanoid Robotics
+  version: 1.0.0
+  contact:
+    name: Book Development Team
+    email: team@example.com
+
+servers:
+  - url: https://api.book.example.com/v1
+    description: Production server
+  - url: https://staging-api.book.example.com/v1
+    description: Staging server
+
+paths:
+  /simulation/start:
+    post:
+      summary: Start a new simulation session
+      description: Creates a new user session for interacting with simulation components
+      tags:
+        - Simulation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: User identifier (optional for anonymous users)
+                  example: "user-12345"
+                simulationType:
+                  type: string
+                  description: Type of simulation (gazebo, unity, mixed)
+                  enum: [gazebo, unity, mixed]
+                  example: "gazebo"
+                environment:
+                  type: string
+                  description: Specific simulation environment
+                  example: "humanoid_robot_world"
+              required:
+                - simulationType
+      responses:
+        '201':
+          description: Session created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessionId:
+                    type: string
+                    description: Unique session identifier
+                    example: "sim-session-67890"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: Session creation timestamp
+                  message:
+                    type: string
+                    description: Welcome message
+                    example: "Simulation session started. Ready to interact with the humanoid robot simulation."
+                  environmentConfig:
+                    type: object
+                    description: Configuration for the simulation environment
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /simulation/{sessionId}/state:
+    get:
+      summary: Get simulation state
+      description: Retrieves the current state of the simulation
+      tags:
+        - Simulation
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The simulation session identifier
+      responses:
+        '200':
+          description: Simulation state retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  state:
+                    type: object
+                    description: Current simulation state
+                    properties:
+                      robotPosition:
+                        type: object
+                        properties:
+                          x:
+                            type: number
+                            format: float
+                          y:
+                            type: number
+                            format: float
+                          z:
+                            type: number
+                            format: float
+                          rotation:
+                            type: object
+                            properties:
+                              x:
+                                type: number
+                                format: float
+                              y:
+                                type: number
+                                format: float
+                              z:
+                                type: number
+                                format: float
+                              w:
+                                type: number
+                                format: float
+                      sensors:
+                        type: object
+                        description: Current sensor readings
+                        properties:
+                          lidar:
+                            type: array
+                            items:
+                              type: number
+                              format: float
+                            description: LiDAR distance readings
+                          imu:
+                            type: object
+                            properties:
+                              linearAcceleration:
+                                type: object
+                                properties:
+                                  x:
+                                    type: number
+                                    format: float
+                                  y:
+                                    type: number
+                                    format: float
+                                  z:
+                                    type: number
+                                    format: float
+                              angularVelocity:
+                                type: object
+                                properties:
+                                  x:
+                                    type: number
+                                    format: float
+                                  y:
+                                    type: number
+                                    format: float
+                                  z:
+                                    type: number
+                                    format: float
+                      physics:
+                        type: object
+                        description: Physics parameters
+                        properties:
+                          gravity:
+                            type: number
+                            format: float
+                          collisionCount:
+                            type: integer
+                          simulationSpeed:
+                            type: number
+                            format: float
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: Timestamp of the state
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /simulation/{sessionId}/command:
+    post:
+      summary: Send command to simulation
+      description: Sends a command to control the simulated robot
+      tags:
+        - Simulation
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The simulation session identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                command:
+                  type: string
+                  description: Command to send to the simulation
+                  enum: [move_forward, turn_left, turn_right, stop, set_velocity, interact_object]
+                  example: "move_forward"
+                parameters:
+                  type: object
+                  description: Command-specific parameters
+                  example:
+                    linear: 0.5
+                    angular: 0.0
+              required:
+                - command
+      responses:
+        '200':
+          description: Command processed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Status of the command execution
+                    example: "success"
+                  newState:
+                    $ref: '#/components/schemas/SimulationState'
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: Timestamp of the response
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /simulation/{sessionId}/reset:
+    post:
+      summary: Reset simulation
+      description: Resets the simulation to its initial state
+      tags:
+        - Simulation
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The simulation session identifier
+      responses:
+        '200':
+          description: Simulation reset successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Confirmation message
+                    example: "Simulation reset to initial state"
+                  initialState:
+                    $ref: '#/components/schemas/SimulationState'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /simulation/{sessionId}/end:
+    post:
+      summary: End simulation session
+      description: Marks a simulation session as completed
+      tags:
+        - Simulation
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The simulation session identifier
+      responses:
+        '200':
+          description: Session ended successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Confirmation message
+                    example: "Simulation session ended successfully"
+                  duration:
+                    type: integer
+                    description: Session duration in seconds
+                    example: 1245
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    SimulationState:
+      type: object
+      properties:
+        robotPosition:
+          type: object
+          properties:
+            x:
+              type: number
+              format: float
+            y:
+              type: number
+              format: float
+            z:
+              type: number
+              format: float
+            rotation:
+              type: object
+              properties:
+                x:
+                  type: number
+                  format: float
+                y:
+                  type: number
+                  format: float
+                z:
+                  type: number
+                  format: float
+                w:
+                  type: number
+                  format: float
+        sensors:
+          type: object
+          properties:
+            lidar:
+              type: array
+              items:
+                type: number
+                format: float
+            imu:
+              type: object
+              properties:
+                linearAcceleration:
+                  type: object
+                  properties:
+                    x:
+                      type: number
+                      format: float
+                    y:
+                      type: number
+                      format: float
+                    z:
+                      type: number
+                      format: float
+                angularVelocity:
+                  type: object
+                  properties:
+                    x:
+                      type: number
+                      format: float
+                    y:
+                      type: number
+                      format: float
+                    z:
+                      type: number
+                      format: float
+        physics:
+          type: object
+          properties:
+            gravity:
+              type: number
+              format: float
+            collisionCount:
+              type: integer
+            simulationSpeed:
+              type: number
+              format: float
+      description: Current state of the simulation environment
+
+  responses:
+    BadRequest:
+      description: Bad request - invalid input parameters
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Invalid input parameters"
+              details:
+                type: object
+                description: Additional error details
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Session not found"
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Internal server error occurred"
+              requestId:
+                type: string
+                description: Request identifier for troubleshooting
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for authenticated users
+
+security:
+  - BearerAuth: []
+
+tags:
+  - name: Simulation
+    description: Simulation environment interaction endpoints

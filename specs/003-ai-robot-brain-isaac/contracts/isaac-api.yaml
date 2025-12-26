@@ -1,0 +1,497 @@
+openapi: 3.0.3
+info:
+  title: Book Isaac API
+  description: API for the Isaac-specific components in the AI-native book on Physical AI & Humanoid Robotics
+  version: 1.0.0
+  contact:
+    name: Book Development Team
+    email: team@example.com
+
+servers:
+  - url: https://api.book.example.com/v1
+    description: Production server
+  - url: https://staging-api.book.example.com/v1
+    description: Staging server
+
+paths:
+  /isaac/simulation/start:
+    post:
+      summary: Start an Isaac simulation session
+      description: Creates a new user session for interacting with Isaac simulation components
+      tags:
+        - Isaac Simulation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: User identifier (optional for anonymous users)
+                  example: "user-12345"
+                simulationType:
+                  type: string
+                  description: Type of Isaac simulation (synthetic-data, slam, navigation)
+                  enum: [synthetic-data, slam, navigation]
+                  example: "slam"
+                environment:
+                  type: string
+                  description: Specific Isaac simulation environment
+                  example: "isaac_synth_environment"
+              required:
+                - simulationType
+      responses:
+        '201':
+          description: Session created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessionId:
+                    type: string
+                    description: Unique session identifier
+                    example: "isaac-sim-session-67890"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: Session creation timestamp
+                  message:
+                    type: string
+                    description: Welcome message
+                    example: "Isaac simulation session started. Ready to interact with synthetic data generation."
+                  environmentConfig:
+                    type: object
+                    description: Configuration for the Isaac simulation environment
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /isaac/simulation/{sessionId}/state:
+    get:
+      summary: Get Isaac simulation state
+      description: Retrieves the current state of the Isaac simulation
+      tags:
+        - Isaac Simulation
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The Isaac simulation session identifier
+      responses:
+        '200':
+          description: Isaac simulation state retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  state:
+                    $ref: '#/components/schemas/IsaacSimulationState'
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: Timestamp of the state
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /isaac/simulation/{sessionId}/command:
+    post:
+      summary: Send command to Isaac simulation
+      description: Sends a command to control the Isaac simulation
+      tags:
+        - Isaac Simulation
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The Isaac simulation session identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                command:
+                  type: string
+                  description: Command to send to the Isaac simulation
+                  enum: [generate_synthetic_data, start_slam, navigate_to_waypoint, reset_simulation, configure_sensor]
+                  example: "generate_synthetic_data"
+                parameters:
+                  type: object
+                  description: Command-specific parameters
+                  example:
+                    sensor_type: "camera"
+                    environment: "outdoor"
+                    num_samples: 1000
+              required:
+                - command
+      responses:
+        '200':
+          description: Command processed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Status of the command execution
+                    example: "success"
+                  newState:
+                    $ref: '#/components/schemas/IsaacSimulationState'
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: Timestamp of the response
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /isaac/simulation/{sessionId}/reset:
+    post:
+      summary: Reset Isaac simulation
+      description: Resets the Isaac simulation to its initial state
+      tags:
+        - Isaac Simulation
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The Isaac simulation session identifier
+      responses:
+        '200':
+          description: Isaac simulation reset successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Confirmation message
+                    example: "Isaac simulation reset to initial state"
+                  initialState:
+                    $ref: '#/components/schemas/IsaacSimulationState'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /isaac/simulation/{sessionId}/end:
+    post:
+      summary: End Isaac simulation session
+      description: Marks an Isaac simulation session as completed
+      tags:
+        - Isaac Simulation
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The Isaac simulation session identifier
+      responses:
+        '200':
+          description: Session ended successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Confirmation message
+                    example: "Isaac simulation session ended successfully"
+                  duration:
+                    type: integer
+                    description: Session duration in seconds
+                    example: 1245
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /isaac/content/search:
+    post:
+      summary: Search Isaac-specific content
+      description: Search for Isaac-specific content in the book based on query
+      tags:
+        - Isaac Content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: Search query
+                  example: "Isaac Sim synthetic data generation"
+                limit:
+                  type: integer
+                  minimum: 1
+                  maximum: 20
+                  default: 5
+                  description: Maximum number of results to return
+                filters:
+                  type: object
+                  description: Additional filters for search
+                  properties:
+                    module:
+                      type: string
+                      description: Limit search to specific module
+                      example: "module-3-ai-brain"
+                    isaacComponent:
+                      type: string
+                      description: Limit search to specific Isaac component
+                      example: "isaac_sim"
+                    rosPackage:
+                      type: string
+                      description: Limit search to specific ROS 2 package
+                      example: "nav2"
+              required:
+                - query
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        contentId:
+                          type: string
+                          description: Content identifier
+                        title:
+                          type: string
+                          description: Content title
+                        excerpt:
+                          type: string
+                          description: Excerpt from the content
+                        url:
+                          type: string
+                          description: URL to the content
+                        relevance:
+                          type: number
+                          format: float
+                          minimum: 0
+                          maximum: 1
+                          description: Relevance score
+                        isaacComponents:
+                          type: array
+                          items:
+                            type: string
+                          description: Isaac components referenced in the content
+                        rosPackages:
+                          type: array
+                          items:
+                            type: string
+                          description: ROS 2 packages referenced in the content
+                  query:
+                    type: string
+                    description: Original search query
+                  total:
+                    type: integer
+                    description: Total number of results available
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    IsaacSimulationState:
+      type: object
+      properties:
+        robotPosition:
+          type: object
+          properties:
+            x:
+              type: number
+              format: float
+            y:
+              type: number
+              format: float
+            z:
+              type: number
+              format: float
+            rotation:
+              type: object
+              properties:
+                x:
+                  type: number
+                  format: float
+                y:
+                  type: number
+                  format: float
+                z:
+                  type: number
+                  format: float
+                w:
+                  type: number
+                  format: float
+        sensors:
+          type: object
+          description: Current sensor readings in the Isaac simulation
+          properties:
+            lidar:
+              type: array
+              items:
+                type: number
+                format: float
+              description: LiDAR distance readings
+            camera:
+              type: object
+              properties:
+                rgb:
+                  type: array
+                  description: RGB image data
+                depth:
+                  type: array
+                  description: Depth map data
+            imu:
+              type: object
+              properties:
+                linearAcceleration:
+                  type: object
+                  properties:
+                    x:
+                      type: number
+                      format: float
+                    y:
+                      type: number
+                      format: float
+                    z:
+                      type: number
+                      format: float
+                angularVelocity:
+                  type: object
+                  properties:
+                    x:
+                      type: number
+                      format: float
+                    y:
+                      type: number
+                      format: float
+                    z:
+                      type: number
+                      format: float
+        physics:
+          type: object
+          description: Physics parameters in the Isaac simulation
+          properties:
+            gravity:
+              type: number
+              format: float
+            collisionCount:
+              type: integer
+            simulationSpeed:
+              type: number
+              format: float
+        isaacSpecific:
+          type: object
+          description: Isaac-specific parameters
+          properties:
+            syntheticDataGenerated:
+              type: integer
+              description: Count of synthetic data samples generated
+            slamStatus:
+              type: string
+              description: Current SLAM status (idle, initializing, tracking, lost)
+            localizationAccuracy:
+              type: number
+              format: float
+              description: Current localization accuracy
+            navigationStatus:
+              type: string
+              description: Navigation status (idle, planning, executing, paused)
+      description: Current state of the Isaac simulation environment
+
+  responses:
+    BadRequest:
+      description: Bad request - invalid input parameters
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Invalid input parameters"
+              details:
+                type: object
+                description: Additional error details
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Session not found"
+    UnprocessableEntity:
+      description: Request cannot be processed (e.g., hallucination detected)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Cannot answer - no relevant book content found"
+              suggestion:
+                type: string
+                example: "Please try rephrasing your question or refer to the book content directly"
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Internal server error occurred"
+              requestId:
+                type: string
+                description: Request identifier for troubleshooting
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for authenticated users
+
+security:
+  - BearerAuth: []
+
+tags:
+  - name: Isaac Simulation
+    description: Isaac simulation environment interaction endpoints
+  - name: Isaac Content
+    description: Isaac-specific content search and retrieval endpoints

@@ -1,0 +1,436 @@
+openapi: 3.0.3
+info:
+  title: Book RAG Chat API
+  description: API for the RAG-enabled chatbot functionality in the AI-native book
+  version: 1.0.0
+  contact:
+    name: Book Development Team
+    email: team@example.com
+
+servers:
+  - url: https://api.book.example.com/v1
+    description: Production server
+  - url: https://staging-api.book.example.com/v1
+    description: Staging server
+
+paths:
+  /chat/start:
+    post:
+      summary: Start a new chat session
+      description: Creates a new user session for the chatbot interaction
+      tags:
+        - Chat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: User identifier (optional for anonymous users)
+                  example: "user-12345"
+                context:
+                  type: string
+                  description: Initial context for the conversation
+                  example: "I'm studying ROS 2 fundamentals"
+              required:
+                - context
+      responses:
+        '201':
+          description: Session created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessionId:
+                    type: string
+                    description: Unique session identifier
+                    example: "session-67890"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: Session creation timestamp
+                  message:
+                    type: string
+                    description: Welcome message
+                    example: "Hello! I'm your AI assistant for the Physical AI & Humanoid Robotics book. How can I help you with Module 1: The Robotic Nervous System?"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /chat/{sessionId}/message:
+    post:
+      summary: Send a message to the chatbot
+      description: Sends a user message and receives an AI response based on book content
+      tags:
+        - Chat
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The session identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: User's message/question
+                  example: "Explain the difference between ROS 2 topics and services"
+                context:
+                  type: string
+                  description: Additional context about current location in book
+                  example: "Module 1, Chapter 1: ROS 2 Fundamentals"
+              required:
+                - message
+      responses:
+        '200':
+          description: AI response to the user's message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    description: AI-generated response
+                    example: "In ROS 2, topics provide a publish-subscribe communication pattern for continuous data streams, while services provide request-response communication for specific tasks that require a reply."
+                  sources:
+                    type: array
+                    description: Book content sources used to generate the response
+                    items:
+                      type: object
+                      properties:
+                        contentId:
+                          type: string
+                          description: ID of the content piece used
+                          example: "mod1-ch1-fundamentals"
+                        title:
+                          type: string
+                          description: Title of the source content
+                          example: "ROS 2 Fundamentals: Nodes, Topics, and Services"
+                        url:
+                          type: string
+                          description: URL to the source content
+                          example: "/docs/module-1-ros2/chapter-1-fundamentals"
+                        confidence:
+                          type: number
+                          format: float
+                          description: Confidence score of this source's relevance
+                          minimum: 0
+                          maximum: 1
+                          example: 0.92
+                  followUp:
+                    type: array
+                    description: Suggested follow-up questions
+                    items:
+                      type: string
+                    example:
+                      - "Can you give an example of when to use topics vs services?"
+                      - "How do ROS 2 nodes discover each other?"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: Timestamp of the response
+                  confidence:
+                    type: number
+                    format: float
+                    description: Overall confidence in the response
+                    minimum: 0
+                    maximum: 1
+                    example: 0.89
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /chat/{sessionId}/history:
+    get:
+      summary: Get chat session history
+      description: Retrieves the conversation history for a specific session
+      tags:
+        - Chat
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The session identifier
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Maximum number of messages to return
+        - name: before
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+          description: Get messages before this timestamp
+      responses:
+        '200':
+          description: Chat history retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ChatMessage'
+                  hasMore:
+                    type: boolean
+                    description: Whether more messages are available
+                  total:
+                    type: integer
+                    description: Total number of messages in session
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /chat/{sessionId}/end:
+    post:
+      summary: End a chat session
+      description: Marks a chat session as completed
+      tags:
+        - Chat
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The session identifier
+      responses:
+        '200':
+          description: Session ended successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Confirmation message
+                    example: "Session ended successfully"
+                  duration:
+                    type: integer
+                    description: Session duration in seconds
+                    example: 1245
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /content/search:
+    post:
+      summary: Search book content
+      description: Search for relevant content in the book based on query
+      tags:
+        - Content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: Search query
+                  example: "ROS 2 node communication patterns"
+                limit:
+                  type: integer
+                  minimum: 1
+                  maximum: 20
+                  default: 5
+                  description: Maximum number of results to return
+                filters:
+                  type: object
+                  description: Additional filters for search
+                  properties:
+                    module:
+                      type: string
+                      description: Limit search to specific module
+                      example: "module-1-ros2"
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                      description: Limit search to content with specific tags
+              required:
+                - query
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        contentId:
+                          type: string
+                          description: Content identifier
+                        title:
+                          type: string
+                          description: Content title
+                        excerpt:
+                          type: string
+                          description: Excerpt from the content
+                        url:
+                          type: string
+                          description: URL to the content
+                        relevance:
+                          type: number
+                          format: float
+                          minimum: 0
+                          maximum: 1
+                          description: Relevance score
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                          description: Content tags
+                  query:
+                    type: string
+                    description: Original search query
+                  total:
+                    type: integer
+                    description: Total number of results available
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Message identifier
+        sender:
+          type: string
+          enum: [user, assistant]
+          description: Who sent the message
+        content:
+          type: string
+          description: Message content
+        timestamp:
+          type: string
+          format: date-time
+          description: When the message was sent
+        sources:
+          type: array
+          items:
+            type: object
+            properties:
+              contentId:
+                type: string
+                description: Source content identifier
+              title:
+                type: string
+                description: Source content title
+              url:
+                type: string
+                description: URL to source content
+              confidence:
+                type: number
+                format: float
+                minimum: 0
+                maximum: 1
+                description: Confidence in source relevance
+
+  responses:
+    BadRequest:
+      description: Bad request - invalid input parameters
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Invalid input parameters"
+              details:
+                type: object
+                description: Additional error details
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Session not found"
+    UnprocessableEntity:
+      description: Request cannot be processed (e.g., hallucination detected)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Cannot answer - no relevant book content found"
+              suggestion:
+                type: string
+                example: "Please try rephrasing your question or refer to the book content directly"
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Internal server error occurred"
+              requestId:
+                type: string
+                description: Request identifier for troubleshooting
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for authenticated users
+
+security:
+  - BearerAuth: []
+
+tags:
+  - name: Chat
+    description: Chatbot interaction endpoints
+  - name: Content
+    description: Content search and retrieval endpoints

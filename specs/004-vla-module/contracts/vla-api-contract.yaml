@@ -1,0 +1,482 @@
+openapi: 3.0.0
+info:
+  title: Vision-Language-Action (VLA) API
+  description: API for Vision-Language-Action module in AI-native robotics book
+  version: 1.0.0
+  contact:
+    name: AI Robotics Book Team
+    email: contact@example.com
+
+servers:
+  - url: http://localhost:8000
+    description: Development server
+  - url: https://api.airoboticsbook.com
+    description: Production server
+
+paths:
+  /vla/process:
+    post:
+      summary: Process a VLA request and return action plan or command
+      description: Process a voice command through the complete VLA pipeline
+      operationId: processVLARequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VLARequest'
+      responses:
+        '200':
+          description: Successful response with action plan or command
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VLAResponse'
+        '400':
+          description: Bad request - invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /vla/plan:
+    post:
+      summary: Generate an action plan from a natural language command
+      description: Generate an action plan using LLMs based on natural language input
+      operationId: generateActionPlan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VLAPlanRequest'
+      responses:
+        '200':
+          description: Action plan generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VLAPlanResponse'
+        '400':
+          description: Bad request - invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /vla/execute-plan:
+    post:
+      summary: Execute an action plan (simulated execution)
+      description: Execute a generated action plan in the simulation environment
+      operationId: executeActionPlan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VLAPlanRequest'
+      responses:
+        '200':
+          description: Action plan executed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VLAExecutionResponse'
+        '400':
+          description: Bad request - invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /vla/health:
+    get:
+      summary: Health check for VLA service
+      description: Check the health status of the VLA module
+      operationId: vlaHealthCheck
+      responses:
+        '200':
+          description: Health status information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /vla/demo/simple-command:
+    post:
+      summary: Demo endpoint for simple voice-to-action commands
+      description: Process a simple command and return the corresponding action
+      operationId: demoSimpleCommand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                command:
+                  type: string
+                  example: "Move forward 2 meters"
+      responses:
+        '200':
+          description: Simple command processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimpleCommandResponse'
+        '400':
+          description: Bad request - invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /vla/demo/complex-command:
+    post:
+      summary: Demo endpoint for complex language-based planning
+      description: Process a complex command and return the generated action plan
+      operationId: demoComplexCommand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                command:
+                  type: string
+                  example: "Go to the kitchen and pick up the red cup"
+      responses:
+        '200':
+          description: Complex command processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplexCommandResponse'
+        '400':
+          description: Bad request - invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    VLARequest:
+      type: object
+      required:
+        - command_text
+      properties:
+        command_text:
+          type: string
+          description: The natural language command to process
+          example: "Navigate to the kitchen and pick up the red cup"
+        audio_data:
+          type: string
+          description: Base64 encoded audio data (optional if text provided)
+          example: "dGVzdGF1ZGlvZGF0YQ=="
+        world_state:
+          $ref: '#/components/schemas/WorldState'
+
+    WorldState:
+      type: object
+      description: Current state of the world/environment
+      properties:
+        robot_position:
+          type: object
+          properties:
+            x:
+              type: number
+              example: 0.0
+            y:
+              type: number
+              example: 0.0
+            z:
+              type: number
+              example: 0.0
+        robot_orientation:
+          type: object
+          properties:
+            x:
+              type: number
+              example: 0.0
+            y:
+              type: number
+              example: 0.0
+            z:
+              type: number
+              example: 0.0
+            w:
+              type: number
+              example: 1.0
+        objects:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectInfo'
+        locations:
+          type: array
+          items:
+            $ref: '#/components/schemas/LocationInfo'
+        available_actions:
+          type: array
+          items:
+            type: string
+            example: "move_to_location"
+
+    ObjectInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "red_cup"
+        type:
+          type: string
+          example: "cup"
+        color:
+          type: string
+          example: "red"
+        position:
+          $ref: '#/components/schemas/Position'
+
+    LocationInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "kitchen"
+        position:
+          $ref: '#/components/schemas/Position'
+
+    Position:
+      type: object
+      properties:
+        x:
+          type: number
+          example: 1.0
+        y:
+          type: number
+          example: 2.0
+        z:
+          type: number
+          example: 0.0
+
+    VLAResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Simple command processed: move_forward"
+        action_command:
+          $ref: '#/components/schemas/ActionCommand'
+        action_plan:
+          $ref: '#/components/schemas/ActionPlan'
+        confidence:
+          type: number
+          example: 0.8
+
+    ActionCommand:
+      type: object
+      properties:
+        action_type:
+          type: string
+          enum: [move_forward, move_backward, turn_left, turn_right, move_to_location, pick_up_object, place_object, stop, follow_path]
+          example: "move_forward"
+        parameters:
+          type: object
+          additionalProperties: true
+          example:
+            distance: 2.0
+        confidence:
+          type: number
+          example: 0.8
+
+    ActionPlan:
+      type: object
+      properties:
+        description:
+          type: string
+          example: "Plan for: Navigate to kitchen and pick up red cup"
+        estimated_total_duration:
+          type: number
+          example: 15.0
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlanStep'
+
+    PlanStep:
+      type: object
+      properties:
+        action_type:
+          type: string
+          enum: [move_to_location, pick_up_object, place_object, move_forward, move_backward, turn_left, turn_right, stop, follow_path]
+          example: "move_to_location"
+        parameters:
+          type: object
+          additionalProperties: true
+          example:
+            location: "kitchen"
+        description:
+          type: string
+          example: "Navigate to kitchen"
+        estimated_duration:
+          type: number
+          example: 5.0
+
+    VLAPlanRequest:
+      type: object
+      required:
+        - command_text
+      properties:
+        command_text:
+          type: string
+          description: The natural language command to process
+          example: "Navigate to the kitchen and pick up the red cup"
+        world_state:
+          $ref: '#/components/schemas/WorldState'
+
+    VLAPlanResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Generated plan with 3 steps"
+        action_plan:
+          $ref: '#/components/schemas/ActionPlan'
+
+    VLAExecutionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Plan executed successfully"
+        execution_results:
+          type: object
+          properties:
+            completed_steps:
+              type: number
+              example: 3
+            successful_steps:
+              type: number
+              example: 3
+            failed_steps:
+              type: number
+              example: 0
+            execution_log:
+              type: array
+              items:
+                type: string
+                example: "Step 1: Navigate to kitchen - PASS"
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "healthy"
+        module:
+          type: string
+          example: "Vision-Language-Action (VLA)"
+        api_key_configured:
+          type: string
+          example: "true"
+
+    SimpleCommandResponse:
+      type: object
+      properties:
+        command:
+          type: string
+          example: "Move forward 2 meters"
+        action_type:
+          type: string
+          example: "move_forward"
+        parameters:
+          type: object
+          example:
+            distance: 2.0
+        confidence:
+          type: number
+          example: 0.8
+
+    ComplexCommandResponse:
+      type: object
+      properties:
+        command:
+          type: string
+          example: "Go to the kitchen and pick up the red cup"
+        plan_steps:
+          type: number
+          example: 2
+        estimated_duration:
+          type: number
+          example: 10.0
+        steps:
+          type: array
+          items:
+            type: object
+            properties:
+              action_type:
+                type: string
+                example: "move_to_location"
+              description:
+                type: string
+                example: "Navigate to kitchen"
+              parameters:
+                type: object
+                example:
+                  location: "kitchen"
+
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+          example: "Error message describing the issue"
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []

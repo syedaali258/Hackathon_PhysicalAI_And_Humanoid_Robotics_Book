@@ -1,0 +1,28 @@
+{
+  "name": "ai-robotics-book",
+  "version": "1.0.0",
+  "description": "AI-native book on Physical AI & Humanoid Robotics with embedded RAG chatbot",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "frontend": "cd book && npm start",
+    "backend": "cd api && uvicorn main:app --reload --port 8000",
+    "frontend:build": "cd book && npm run build",
+    "frontend:serve": "cd book && npm run serve",
+    "backend:prod": "cd api && uvicorn main:app --host 0.0.0.0 --port 8000",
+    "test": "cd api && python -m pytest tests/ -v"
+  },
+  "keywords": [
+    "ai",
+    "robotics",
+    "ros2",
+    "docusaurus",
+    "rag",
+    "education"
+  ],
+  "author": "AI Robotics Book Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

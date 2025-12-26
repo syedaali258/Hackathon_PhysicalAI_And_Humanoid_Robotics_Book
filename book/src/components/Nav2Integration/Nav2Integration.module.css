@@ -1,0 +1,549 @@
+.nav2Integration {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 20px 0;
+  background-color: #fafafa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.header h2 {
+  color: #2563eb;
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+}
+
+.header p {
+  color: #64748b;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.tabButton {
+  padding: 10px 20px;
+  border: 1px solid #cbd5e1;
+  background-color: white;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.tabButton:hover {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.tabButton.active {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+  border-bottom: 1px solid #fafafa;
+}
+
+.contentArea {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 24px;
+  min-height: 400px;
+}
+
+/* Overview Styles */
+.overview h3 {
+  color: #1e293b;
+  margin: 0 0 20px 0;
+  font-size: 1.25rem;
+}
+
+.architecture h4 {
+  color: #1e293b;
+  margin: 24px 0 16px 0;
+  font-size: 1.125rem;
+}
+
+.componentGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 16px;
+}
+
+.componentCard {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.componentCard h5 {
+  color: #1e293b;
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+}
+
+.componentCard p {
+  color: #64748b;
+  margin: 0 0 12px 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.componentDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.detailItem:last-child {
+  border-bottom: none;
+}
+
+.detailLabel {
+  font-weight: 500;
+  color: #475569;
+  font-size: 0.75rem;
+}
+
+.detailValue {
+  color: #1e293b;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.behaviorTree h4 {
+  color: #1e293b;
+  margin: 32px 0 16px 0;
+  font-size: 1.125rem;
+  text-align: center;
+}
+
+.treeVisualization {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 16px;
+  font-size: 0.875rem;
+}
+
+.treeNode {
+  background-color: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin: 6px 0;
+  text-align: center;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.treeBranch {
+  margin-left: 24px;
+  padding-left: 24px;
+  border-left: 2px solid #e2e8f0;
+  position: relative;
+}
+
+/* Visualization Styles */
+.visualization h3 {
+  color: #1e293b;
+  margin: 0 0 16px 0;
+  font-size: 1.25rem;
+}
+
+.simulationControls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.controlButton {
+  padding: 8px 16px;
+  border: 1px solid #cbd5e1;
+  background-color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.controlButton:hover:not(:disabled) {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.controlButton:disabled {
+  background-color: #e2e8f0;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.statusPanel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background-color: #f8fafc;
+  border-radius: 6px;
+}
+
+.statusItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statusLabel {
+  font-weight: 500;
+  color: #475569;
+  font-size: 0.875rem;
+}
+
+.statusValue {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.875rem;
+}
+
+.statusValue--idle {
+  color: #64748b;
+}
+
+.statusValue--executing {
+  color: #059669;
+}
+
+.statusValue--completed {
+  color: #16a34a;
+}
+
+.statusValue--recovery {
+  color: #d97706;
+}
+
+.costmapVisualization h4 {
+  color: #1e293b;
+  margin: 0 0 12px 0;
+  font-size: 1rem;
+}
+
+.costmapGrid {
+  display: inline-grid;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.costmapRow {
+  display: flex;
+}
+
+.costmapCell {
+  width: 16px;
+  height: 16px;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5rem;
+  line-height: 1;
+}
+
+.costmapCell.cellFree {
+  background-color: #ffffff;
+  color: #64748b;
+}
+
+.costmapCell.cellLowCost {
+  background-color: #e2e8f0;
+  color: #475569;
+}
+
+.costmapCell.cellMediumCost {
+  background-color: #cbd5e1;
+  color: #334155;
+}
+
+.costmapCell.cellHighCost {
+  background-color: #94a3b8;
+  color: #1e293b;
+}
+
+.costmapCell.cellOccupied {
+  background-color: #334155;
+  color: #f8fafc;
+}
+
+.costmapCell.cellUnknown {
+  background-color: #f1f5f9;
+  color: #64748b;
+}
+
+.costmapCell.cellRobot {
+  background-color: #ef4444;
+  color: #f8fafc;
+  font-weight: bold;
+}
+
+.costmapCell.cellGoal {
+  background-color: #22c55e;
+  color: #f8fafc;
+  font-weight: bold;
+}
+
+.costmapCell.cellPath {
+  background-color: #3b82f6;
+  color: #f8fafc;
+}
+
+.emptyCostmap {
+  padding: 40px;
+  text-align: center;
+  color: #64748b;
+  font-style: italic;
+}
+
+.recoveryControls h4 {
+  color: #1e293b;
+  margin: 24px 0 12px 0;
+  font-size: 1rem;
+}
+
+.recoveryButtons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.recoveryButton {
+  padding: 6px 12px;
+  border: 1px solid #cbd5e1;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.75rem;
+}
+
+.recoveryButton:hover {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+/* Humanoid Considerations */
+.humanoidConsiderations h3 {
+  color: #1e293b;
+  margin: 0 0 20px 0;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.considerationsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.considerationCard {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.considerationCard h4 {
+  color: #1e293b;
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+}
+
+.considerationCard p {
+  color: #64748b;
+  margin: 0 0 12px 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.constraintList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.constraintItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.constraintItem:last-child {
+  border-bottom: none;
+}
+
+.constraintName {
+  font-weight: 500;
+  color: #475569;
+  font-size: 0.75rem;
+}
+
+.constraintValue {
+  color: #1e293b;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.tuningParameters h4 {
+  color: #1e293b;
+  margin: 32px 0 16px 0;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.parametersTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.parametersTable th,
+.parametersTable td {
+  border: 1px solid #e2e8f0;
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 0.75rem;
+}
+
+.parametersTable th {
+  background-color: #f8fafc;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.parametersTable tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+/* Explanation Section */
+.explanation h3 {
+  color: #1e293b;
+  margin: 32px 0 16px 0;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.benefitsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.benefit {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.benefit h4 {
+  color: #1e293b;
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+}
+
+.benefit p {
+  color: #64748b;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Loading and Animation */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #2563eb;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .tabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tabButton {
+    border-radius: 6px;
+    margin-bottom: 4px;
+  }
+
+  .statusPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .recoveryButtons {
+    flex-direction: column;
+  }
+
+  .componentGrid,
+  .considerationsGrid,
+  .benefitsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .treeBranch {
+    margin-left: 0;
+    padding-left: 12px;
+  }
+
+  .parametersTable {
+    font-size: 0.65rem;
+  }
+
+  .parametersTable th,
+  .parametersTable td {
+    padding: 4px 6px;
+  }
+}

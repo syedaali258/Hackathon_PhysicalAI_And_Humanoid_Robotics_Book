@@ -1,0 +1,244 @@
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.demoArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.robotVisualization {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.robot {
+  width: 120px;
+  height: 160px;
+  margin: 0 auto 1rem;
+  position: relative;
+}
+
+.robotBody {
+  width: 60px;
+  height: 80px;
+  background-color: #4a90e2;
+  margin: 0 auto;
+  border-radius: 10px;
+  position: relative;
+}
+
+.robotHead {
+  width: 50px;
+  height: 50px;
+  background-color: #7ed321;
+  border-radius: 50%;
+  margin: -25px auto 0;
+  position: relative;
+  z-index: 1;
+}
+
+.robotArmLeft, .robotArmRight {
+  width: 15px;
+  height: 50px;
+  background-color: #4a90e2;
+  position: absolute;
+  top: 30px;
+}
+
+.robotArmLeft {
+  left: -10px;
+  transform-origin: top center;
+}
+
+.robotArmRight {
+  right: -10px;
+  transform-origin: top center;
+}
+
+.robot.idle .robotBody {
+  background-color: #4a90e2;
+}
+
+.robot.processing .robotBody {
+  background-color: #f5a623;
+  animation: pulse 1s infinite;
+}
+
+.robot.executing .robotBody {
+  background-color: #bd10e0;
+  animation: pulse 0.5s infinite;
+}
+
+.robot.completed .robotBody {
+  background-color: #7ed321;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.robotStatus {
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.statusText {
+  text-transform: capitalize;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: normal;
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.listenButton {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.3s;
+}
+
+.listenButton:hover:not(:disabled) {
+  background-color: #357abd;
+}
+
+.listenButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.listening {
+  background-color: #f5a623 !important;
+  animation: breathing 1.5s infinite;
+}
+
+@keyframes breathing {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.listeningIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dot {
+  height: 8px;
+  width: 8px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulseDot 1.4s infinite;
+}
+
+@keyframes pulseDot {
+  0% { transform: scale(0.8); opacity: 0.7; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.8); opacity: 0.7; }
+}
+
+.resetButton {
+  background-color: #9013fe;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.resetButton:hover:not(:disabled) {
+  background-color: #7a0de0;
+}
+
+.resetButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.commandOutput {
+  width: 100%;
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.transcript, .result, .processing {
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border-radius: 4px;
+  border-left: 4px solid #4a90e2;
+  background-color: white;
+}
+
+.result {
+  border-left-color: #7ed321;
+  background-color: #f0f9ff;
+}
+
+.processing {
+  border-left-color: #f5a623;
+  background-color: #fff8e1;
+}
+
+.explanation {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.explanation h4 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.explanation ol {
+  padding-left: 1.5rem;
+}
+
+.explanation li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .listenButton, .resetButton {
+    width: 100%;
+    max-width: 300px;
+  }
+}

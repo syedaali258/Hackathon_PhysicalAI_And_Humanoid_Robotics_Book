@@ -1,0 +1,255 @@
+.isaacSimulation {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 20px 0;
+  background-color: #fafafa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.header h2 {
+  color: #2563eb;
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+}
+
+.header p {
+  color: #64748b;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.controlButton {
+  padding: 8px 16px;
+  border: 1px solid #cbd5e1;
+  background-color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.controlButton:hover {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.controlButton.active {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.visualizationArea {
+  min-height: 400px;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.contentSection {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.description {
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.column h4 {
+  color: #1e293b;
+  margin: 0 0 12px 0;
+  font-size: 1.125rem;
+}
+
+.featureList, .benefitList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.featureItem, .benefitItem {
+  padding: 8px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.featureItem:last-child, .benefitItem:last-child {
+  border-bottom: none;
+}
+
+.featureIcon, .benefitIcon {
+  margin-right: 8px;
+  font-weight: bold;
+}
+
+.featureIcon {
+  color: #10b981;
+}
+
+.benefitIcon {
+  color: #f59e0b;
+}
+
+.sensorsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.sensorCard {
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 16px;
+  background-color: white;
+  transition: box-shadow 0.2s ease;
+}
+
+.sensorCard:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.sensorCard h4 {
+  color: #1e293b;
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+}
+
+.sensorDescription {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin: 0 0 8px 0;
+}
+
+.useCase {
+  font-size: 0.75rem;
+  color: #475569;
+  background-color: #f1f5f9;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.stepsContainer {
+  margin-top: 20px;
+}
+
+.stepItem {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  padding: 12px;
+  background-color: #f8fafc;
+  border-left: 3px solid #2563eb;
+  border-radius: 0 4px 4px 0;
+}
+
+.stepNumber {
+  background-color: #2563eb;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: bold;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.stepContent h4 {
+  margin: 0 0 4px 0;
+  color: #1e293b;
+  font-size: 1rem;
+}
+
+.stepContent p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.explanation {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 24px;
+}
+
+.explanation h3 {
+  color: #1e293b;
+  margin: 0 0 12px 0;
+  font-size: 1.25rem;
+}
+
+.explanation p {
+  color: #475569;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #2563eb;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .controlButton {
+    width: 100%;
+    max-width: 200px;
+  }
+}

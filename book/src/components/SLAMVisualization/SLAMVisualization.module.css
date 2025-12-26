@@ -1,0 +1,483 @@
+.slamVisualization {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 20px 0;
+  background-color: #fafafa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.header h2 {
+  color: #2563eb;
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+}
+
+.header p {
+  color: #64748b;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.tabButton {
+  padding: 10px 20px;
+  border: 1px solid #cbd5e1;
+  background-color: white;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.tabButton:hover {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.tabButton.active {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+  border-bottom: 1px solid #fafafa;
+}
+
+.contentArea {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 24px;
+  min-height: 400px;
+}
+
+/* Overview Styles */
+.overview h3 {
+  color: #1e293b;
+  margin: 0 0 20px 0;
+  font-size: 1.25rem;
+}
+
+.conceptCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.conceptCard {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 16px;
+  transition: box-shadow 0.2s ease;
+}
+
+.conceptCard:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.conceptCard h4 {
+  color: #1e293b;
+  margin: 0 0 12px 0;
+  font-size: 1rem;
+}
+
+.conceptCard p {
+  color: #64748b;
+  margin: 0 0 12px 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.featureExample {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cornerFeature, .edgeFeature, .landmarkFeature {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  margin: 2px 0;
+}
+
+.cornerFeature {
+  background-color: #dbeafe;
+  border: 1px solid #3b82f6;
+  color: #1d4ed8;
+}
+
+.edgeFeature {
+  background-color: #dcfce7;
+  border: 1px solid #22c55e;
+  color: #166534;
+}
+
+.landmarkFeature {
+  background-color: #fef3c7;
+  border: 1px solid #f59e0b;
+  color: #92400e;
+}
+
+.trackingDiagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.frame {
+  background-color: #e0f2fe;
+  border: 1px solid #0ea5e9;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 0.75rem;
+}
+
+.arrow {
+  font-size: 1.25rem;
+  color: #64748b;
+}
+
+.mapDiagram {
+  position: relative;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.featurePoint {
+  width: 8px;
+  height: 8px;
+  background-color: #ef4444;
+  border-radius: 50%;
+  position: absolute;
+  margin: -4px;
+}
+
+.featurePoint:nth-child(2) {
+  left: 20px;
+  top: 20px;
+}
+
+.featurePoint:nth-child(3) {
+  left: 40px;
+  top: 30px;
+}
+
+.connectionLine {
+  width: 40px;
+  height: 2px;
+  background-color: #64748b;
+  position: absolute;
+  transform: rotate(45deg);
+}
+
+/* Simulation Styles */
+.simulation h3 {
+  color: #1e293b;
+  margin: 0 0 16px 0;
+  font-size: 1.25rem;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.controlButton {
+  padding: 8px 16px;
+  border: 1px solid #cbd5e1;
+  background-color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.controlButton:hover:not(:disabled) {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.controlButton:disabled {
+  background-color: #e2e8f0;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.controlButton.active {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.statusPanel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background-color: #f8fafc;
+  border-radius: 6px;
+}
+
+.statusItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statusLabel {
+  font-weight: 500;
+  color: #475569;
+  font-size: 0.875rem;
+}
+
+.statusValue {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.875rem;
+}
+
+.visualizationCanvas {
+  position: relative;
+  margin-top: 20px;
+}
+
+.canvas {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  background-color: #f1f5f9;
+}
+
+.mapLegend {
+  display: flex;
+  gap: 20px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: #475569;
+}
+
+.robotMarker {
+  width: 12px;
+  height: 12px;
+  background-color: #ef4444;
+  border-radius: 50%;
+}
+
+.featureMarker {
+  width: 8px;
+  height: 8px;
+  background-color: #3b82f6;
+  border-radius: 50%;
+}
+
+.mapMarker {
+  width: 6px;
+  height: 6px;
+  background-color: #10b981;
+  border-radius: 50%;
+}
+
+/* Architecture Styles */
+.architecture h3 {
+  color: #1e293b;
+  margin: 0 0 20px 0;
+  font-size: 1.25rem;
+}
+
+.pipelineDiagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 24px 0;
+  flex-wrap: wrap;
+}
+
+.pipelineStage {
+  text-align: center;
+  min-width: 120px;
+}
+
+.stageTitle {
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+  font-size: 0.875rem;
+}
+
+.stageContent {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.sensor, .component, .output {
+  background-color: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 6px 8px;
+  margin: 4px 0;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.component {
+  background-color: #dbeafe;
+  border-color: #3b82f6;
+}
+
+.output {
+  background-color: #dcfce7;
+  border-color: #22c55e;
+}
+
+.arrow {
+  font-size: 1.5rem;
+  color: #64748b;
+  font-weight: bold;
+}
+
+.performanceMetrics h4 {
+  color: #1e293b;
+  margin: 24px 0 16px 0;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+}
+
+.metric {
+  text-align: center;
+  padding: 12px;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+}
+
+.metricValue {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2563eb;
+  margin-bottom: 4px;
+}
+
+.metricLabel {
+  font-size: 0.75rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+/* Explanation Section */
+.explanation h3 {
+  color: #1e293b;
+  margin: 32px 0 16px 0;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.benefitsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.benefit {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.benefit h4 {
+  margin: 0 0 8px 0;
+  color: #1e293b;
+  font-size: 1rem;
+}
+
+.benefit p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Loading State */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #2563eb;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .tabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tabButton {
+    border-radius: 6px;
+    margin-bottom: 4px;
+  }
+
+  .pipelineDiagram {
+    flex-direction: column;
+  }
+
+  .arrow {
+    transform: rotate(90deg);
+    margin: 10px 0;
+  }
+
+  .statusPanel {
+    grid-template-columns: 1fr;
+  }
+}
