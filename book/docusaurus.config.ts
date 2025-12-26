@@ -2,34 +2,25 @@ import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
-
 const config: Config = {
   title: 'AI/Robotics Book',
   tagline: 'Physical AI & Humanoid Robotics with ROS 2',
   favicon: 'img/favicon.ico',
 
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
+    v4: true,
   },
 
-  // Set the production url of your site here
-  url: 'https://your-username.github.io',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/ai-robotics-book/',
+  // Production URL
+  url: 'https://syedaali258.github.io',
+  baseUrl: '/hackathon_physicalAI_and_Humanoid_Robotics_book/',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'your-username', // Usually your GitHub org/user name.
-  projectName: 'ai-robotics-book', // Usually your repo name.
+  // GitHub pages deployment config
+  organizationName: 'syedaali258', // Your GitHub username
+  projectName: 'hackathon_physicalAI_and_Humanoid_Robotics_book', // Your repo name
 
   onBrokenLinks: 'throw',
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -41,10 +32,8 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/syedaali258/hackathon_physicalAI_and_Humanoid_Robotics_book/edit/main/',
         },
         blog: {
           showReadingTime: true,
@@ -52,11 +41,8 @@ const config: Config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          // Useful options to enforce blogging best practices
+            'https://github.com/syedaali258/hackathon_physicalAI_and_Humanoid_Robotics_book/edit/main/',
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
@@ -69,7 +55,6 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     colorMode: {
       respectPrefersColorScheme: true,
@@ -89,7 +74,7 @@ const config: Config = {
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/your-username/ai-robotics-book',
+          href: 'https://github.com/syedaali258/hackathon_physicalAI_and_Humanoid_Robotics_book',
           label: 'GitHub',
           position: 'right',
         },
@@ -112,7 +97,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub Discussions',
-              href: 'https://github.com/your-username/ai-robotics-book/discussions',
+              href: 'https://github.com/syedaali258/hackathon_physicalAI_and_Humanoid_Robotics_book/discussions',
             },
             {
               label: 'ROS Answers',
@@ -129,7 +114,7 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/your-username/ai-robotics-book',
+              href: 'https://github.com/syedaali258/hackathon_physicalAI_and_Humanoid_Robotics_book',
             },
           ],
         },
