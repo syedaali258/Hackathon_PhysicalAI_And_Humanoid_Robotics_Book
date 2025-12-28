@@ -13,11 +13,11 @@ const config: Config = {
 
   // Production URL
   url: 'https://syedaali258.github.io',
-  baseUrl: '/hackathon_physicalAI_and_Humanoid_Robotics_book/',
+  baseUrl: '/',
 
   // GitHub pages deployment config
   organizationName: 'syedaali258', // Your GitHub username
-  projectName: 'hackathon_physicalAI_and_Humanoid_Robotics_book', // Your repo name
+  projectName: 'Hackathon_PhysicalAI_And_Humanoid_Robotics_Book', // Your repo name
 
   onBrokenLinks: 'throw',
 
@@ -33,7 +33,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           editUrl:
-            'https://github.com/syedaali258/hackathon_physicalAI_and_Humanoid_Robotics_book/edit/main/',
+            'https://github.com/syedaali258/Hackathon_PhysicalAI_And_Humanoid_Robotics_Book/edit/main/',
         },
         blog: {
           showReadingTime: true,
@@ -42,7 +42,7 @@ const config: Config = {
             xslt: true,
           },
           editUrl:
-            'https://github.com/syedaali258/hackathon_physicalAI_and_Humanoid_Robotics_book/edit/main/',
+            'https://github.com/syedaali258/Hackathon_PhysicalAI_And_Humanoid_Robotics_Book/edit/main/',
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
@@ -74,7 +74,7 @@ const config: Config = {
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/syedaali258/hackathon_physicalAI_and_Humanoid_Robotics_book',
+          href: 'https://github.com/syedaali258/Hackathon_PhysicalAI_And_Humanoid_Robotics_Book',
           label: 'GitHub',
           position: 'right',
         },
@@ -97,7 +97,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub Discussions',
-              href: 'https://github.com/syedaali258/hackathon_physicalAI_and_Humanoid_Robotics_book/discussions',
+              href: 'https://github.com/syedaali258/Hackathon_PhysicalAI_And_Humanoid_Robotics_Book/discussions',
             },
             {
               label: 'ROS Answers',
@@ -114,7 +114,7 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/syedaali258/hackathon_physicalAI_and_Humanoid_Robotics_book',
+              href: 'https://github.com/syedaali258/Hackathon_PhysicalAI_And_Humanoid_Robotics_Book',
             },
           ],
         },
