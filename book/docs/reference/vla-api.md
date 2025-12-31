@@ -390,4 +390,4 @@ curl -X POST http://localhost:8000/vla/pipeline \
 
 ## Client Libraries
 
-For implementation examples in different programming languages, refer to the [Client Libraries](/docs/reference/client-libraries) section.
+For implementation examples in different programming languages, refer to the [Client Libraries](/reference/client-libraries) section.

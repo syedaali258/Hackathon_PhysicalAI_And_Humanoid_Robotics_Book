@@ -81,7 +81,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Reference',
       items: [
-        'reference/vla-api',
+        'reference/client-libraries',
       ],
     },
   ],
