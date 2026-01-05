@@ -14,7 +14,7 @@ const config: Config = {
   // ✅ Vercel URL (example – deploy ke baad change kar sakti ho)
   
   url: 'https://syedaali258.github.io',
-baseUrl: '/Hackathon_PhysicalAI_And_Humanoid_Robotics_Book/',
+baseUrl: '/',
 trailingSlash: false,
 
 
